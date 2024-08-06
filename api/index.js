@@ -6,8 +6,6 @@ const User = require('./models/User.js');
 require('dotenv').config();
 const app = express();
 
-const bcryptSalt = bcrypt.genSalt(10);
-
 app.use(express.json());
 app.use(cors({
     credentials: true,
@@ -22,12 +20,13 @@ app.get('/test', (req, res) => {
 
 app.post('/register', async (req, res) => {
     const {name, email, password} = req.body;
+
     const userDoc = await User.create({
         name,
         email,
-        password,
-        // password: bcrypt.hashSync(password, bcryptSalt),
+        password: bcrypt.hashSync(password, 10),
     });
+
 
     res.json(userDoc);
 });
