@@ -66,13 +66,25 @@ export default function PlacesPage() {
             )}
             <input
               type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="title, for example: My lovely appartment"
             />
             {preInput("Address", "Address to this place")}
-            <input type="text" placeholder="address" />
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="address"
+            />
             {preInput("Photos", "more = better")}
             <div className="flex gap-2">
-              <input type="text" placeholder={"Add using a link ....jpg"} />
+              <input
+                type="text"
+                value={photoLink}
+                onChange={(e) => setPhotoLink(e.target.value)}
+                placeholder={"Add using a link ....jpg"}
+              />
               <button className="bg-gray-200 px-4 rounded-2xl">
                 Add&nbsp;photo
               </button>
@@ -101,13 +113,19 @@ export default function PlacesPage() {
               </button>
             </div>
             {preInput("Description", "description of the place")}
-            <textarea />
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
             {preInput("Perks", "select all the perks of your place")}
             <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-              <Perks />
+              <Perks selected={perks} onChange={setPerks} />
             </div>
             {preInput("Extra info", "house rules, etc")}
-            <textarea />
+            <textarea
+              value={extraInfo}
+              onChange={(e) => setExtraInfo(e.target.value)}
+            />
             {preInput(
               "Check in&out times",
               "add check in and out times, remember to have some time window for cleaning the room between guests"
@@ -115,15 +133,30 @@ export default function PlacesPage() {
             <div className="grid gap-2 sm:grid-cols-3">
               <div>
                 <h3 className="mt-2 -mb-1">Check in time</h3>
-                <input type="text" placeholder="14:00" />
+                <input
+                  type="text"
+                  value={checkIn}
+                  onChange={(e) => setCheckIn(e.target.value)}
+                  placeholder="14"
+                />
               </div>
               <div>
                 <h3 className="mt-2 -mb-1">Check out time</h3>
-                <input type="text" />
+                <input
+                  type="text"
+                  value={checkOut}
+                  onChange={(e) => setCheckOut(e.target.value)}
+                  placeholder="11"
+                />
               </div>
               <div>
                 <h3 className="mt-2 -mb-1">Max number of guests</h3>
-                <input type="text" />
+                <input
+                  type="number"
+                  value={maxGuests}
+                  onChange={(e) => setMaxGuests(e.target.value)}
+                  placeholder="20"
+                />
               </div>
             </div>
             <button className="primary my-4">Save</button>
