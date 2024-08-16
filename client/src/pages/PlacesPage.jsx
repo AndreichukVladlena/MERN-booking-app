@@ -125,10 +125,10 @@ export default function PlacesPage() {
             <div className="grid gap-2 mt-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
               {addedPhotos.length > 0 &&
                 addedPhotos.map((link) => (
-                  <div className="h-32 flex">
+                  <div className="h-32 flex" key={link}>
                     <img
                       className="rounded-2xl w-full object-cover"
-                      src={"http://localhost:4000/" + link}
+                      src={"http://localhost:4000/uploads/" + link}
                       alt=""
                     />
                   </div>
