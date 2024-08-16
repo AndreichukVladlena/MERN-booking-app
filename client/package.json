@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@rollup/plugin-inject": "^5.0.5",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.3",
     "postcss": "^8.4.40",
