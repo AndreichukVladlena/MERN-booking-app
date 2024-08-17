@@ -2,6 +2,7 @@ import { useState } from "react";
 import Perks from "../Perks";
 import axios from "axios";
 import PhotosUploader from "../PhotosUploader";
+import AccountNav from "../AccountNav";
 export default function PlacesFormPage() {
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
@@ -45,7 +46,6 @@ export default function PlacesFormPage() {
       checkOut,
       maxGuests,
     });
-    setRedirectToPlacesList(true);
 
     if (redirectToPlacesList && action !== "new") {
       return <Navigate to={"/account/places"} />;
@@ -54,6 +54,7 @@ export default function PlacesFormPage() {
 
   return (
     <>
+      <AccountNav />
       <form onSubmit={addNewPlace}>
         {preInput("Title", "Title for your place, should be short and catchy")}
         <input
