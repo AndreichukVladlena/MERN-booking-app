@@ -233,7 +233,7 @@ app.post("/bookings", async (req, res) => {
 
 app.get("/bookings", async (req, res) => {
   const userData = await getUserDataFromToken(req);
-  res.json(Booking.findOne({}));
+  res.json(Booking.find({ user: userData.id }));
   userData.id;
 });
 
