@@ -28,6 +28,15 @@ app.use(
 
 mongoose.connect(process.env.MONGO_URL);
 
+function getUserDataFromToken(req) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  });
+}
+
 app.get("/test", (req, res) => {
   res.json("test ok");
 });
@@ -203,6 +212,7 @@ app.get("/places", async (req, res) => {
 });
 
 app.post("/bookings", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
   const { place, checkIn, checkOut, name, phone, price } = req.body;
   Booking.create({
     place,
@@ -211,6 +221,7 @@ app.post("/bookings", async (req, res) => {
     name,
     phone,
     price,
+    user: userData.id,
   })
     .then((doc) => {
       res.json(doc);
@@ -220,13 +231,10 @@ app.post("/bookings", async (req, res) => {
     });
 });
 
-function getUserDataFromToken(req) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
-      if (err) throw err;
-      resolve(userData);
-    });
-  });
-}
+app.get("/bookings", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+  res.json(Booking.findOne({}));
+  userData.id;
+});
 
 app.listen(4000);
