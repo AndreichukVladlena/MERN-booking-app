@@ -30,7 +30,7 @@ function App() {
           <Route path="/account/places/new" element={<PlacesFormPage />} />
           <Route path="/account/places/:id" element={<PlacesFormPage />} />
           <Route path="/place/:id" element={<PlacePage />} />
-          <Route path="/bookings/:id" element={<BookingPage />} />
+          <Route path="/account/bookings/:id" element={<BookingPage />} />
           <Route path="/account/bookings/" element={<BookingsPage />} />
         </Route>
       </Routes>
