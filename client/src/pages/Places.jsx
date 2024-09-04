@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import AccountNav from "../AccountNav";
+import AccountNav from "../components/AccountNav";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import PlaceImg from "../PlaceImg";
+import PlaceImg from "../components/PlaceImg";
 export default function PlacesPage() {
   const [places, setPlaces] = useState([]);
   useEffect(() => {

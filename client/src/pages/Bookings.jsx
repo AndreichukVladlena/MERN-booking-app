@@ -1,5 +1,5 @@
 import axios from "axios";
-import AccountNav from "../AccountNav";
+import AccountNav from "../components/AccountNav";
 import { useState, useEffect } from "react";
 import { format, differenceInCalendarDays } from "date-fns";
 import PlaceImg from "../components/PlaceImg";
