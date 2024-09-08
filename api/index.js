@@ -28,7 +28,7 @@ app.use(
 
 mongoose.connect(process.env.MONGO_URL);
 
-function getUserDataFromToken(req) {
+function getUserDataFromRequest(req) {
   return new Promise((resolve, reject) => {
     jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
@@ -208,11 +208,55 @@ app.put("/places", async (req, res) => {
 });
 
 app.get("/places", async (req, res) => {
-  res.json(await Place.find());
+  const filters = {};
+
+  if (req.query.keywords) {
+    const searchRegex = { $regex: req.query.keywords, $options: "i" };
+    filters.$or = [
+      { title: searchRegex },
+      { address: searchRegex },
+      { description: searchRegex },
+      { extraInfo: searchRegex },
+    ];
+  }
+
+  if (req.query.minCheckIn || req.query.maxCheckIn) {
+    filters.checkIn = {};
+    if (req.query.minCheckIn) filters.checkIn.$gte = req.query.minCheckIn;
+    if (req.query.maxCheckIn) filters.checkIn.$lte = req.query.maxCheckIn;
+  }
+
+  if (req.query.minCheckOut || req.query.maxCheckOut) {
+    filters.checkOut = {};
+    if (req.query.minCheckOut) filters.checkOut.$gte = req.query.minCheckOut;
+    if (req.query.maxCheckOut) filters.checkOut.$lte = req.query.maxCheckOut;
+  }
+
+  if (req.query.maxGuests) {
+    filters.maxGuests = { $gte: req.query.maxGuests };
+  }
+
+  if (req.query.minPrice || req.query.maxPrice) {
+    filters.price = {};
+    if (req.query.minPrice) filters.price.$gte = req.query.minPrice;
+    if (req.query.maxPrice) filters.price.$lte = req.query.maxPrice;
+  }
+
+  if (req.query.perks) {
+    const perksArray = req.query.perks;
+    filters.perks = { $all: perksArray };
+  }
+
+  try {
+    const places = await Place.find(filters);
+    res.json(places);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 app.post("/bookings", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const userData = await getUserDataFromRequest(req);
   const { place, checkIn, checkOut, name, phone, price } = req.body;
   Booking.create({
     place,
@@ -232,9 +276,8 @@ app.post("/bookings", async (req, res) => {
 });
 
 app.get("/bookings", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
-  res.json(Booking.find({ user: userData.id }));
-  userData.id;
+  const userData = await getUserDataFromRequest(req);
+  res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
 
 app.listen(4000);
